@@ -1,14 +1,14 @@
 <?php
 
-namespace Pathum4u\ApiNotification\Notification;
+namespace Pathum4u\ApiNotification;
 
 use Illuminate\Support\Facades\URL;
+use Pathum4u\ApiRequest\ApiRequest;
+use Pathum4u\ApiNotification\Action;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Arrayable;
-use pathum4u\send_api_notification\Notification\Action;
-use pathum4u\send_api_notification\Providers\RequestServiceProvider;
 
-class MailNotification extends RequestServiceProvider
+class MailNotification
 {
 
     /**
@@ -416,9 +416,18 @@ class MailNotification extends RequestServiceProvider
      *
      * @return string
      */
-    public function send($url)
+    public function send($url, $service = 'notification')
     {
-        return $this->request('POST', $url, ['data' => json_encode($this)]);
+        //
+        $chanel = new ApiRequest();
+        $chanel->service($service);
+        $chanel->url($url);
+        $chanel->method('POST');
+        $chanel->params(['data' => json_encode($this, true)]);
+        // $chanel->debug(true);
+
+        return $chanel->send();
+
     }
 
 }

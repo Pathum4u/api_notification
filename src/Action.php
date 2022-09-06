@@ -1,6 +1,6 @@
 <?php
 
-namespace Pathum4u\ApiNotification\Notification;
+namespace Pathum4u\ApiNotification;
 
 class Action
 {

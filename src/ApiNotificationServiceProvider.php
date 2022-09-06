@@ -14,9 +14,7 @@ class ApiNotificationServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $this->publishes([
-            __DIR__ . '/../config/mail.php' => config_path('mail.php'),
-        ]);
+
     }
 
     /**

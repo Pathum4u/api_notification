@@ -1,5 +1,5 @@
 {
-    "name": "pathum4u/api_notifications",
+    "name": "pathum4u/api_notification",
     "description": "micorservice api notification service",
     "type": "library",
     "require": {
