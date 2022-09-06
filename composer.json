@@ -3,7 +3,7 @@
     "description": "micorservice api notification service",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^7.5"
+        "pathum4u/api_request": "^1.0"
     },
     "license": "MIT",
     "autoload": {
