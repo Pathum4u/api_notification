@@ -1,4 +1,4 @@
-API Request for Multiple source With GuzzleHttp
+API Request for Multiple source notification services
 ========================================
 
 Simple Laravel\Lumen Micro service api notification request package(service to service).
