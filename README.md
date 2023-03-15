@@ -23,18 +23,101 @@ Request
 
 
 ```
-use Pathum4u\ApiNotification\MailNotification;
-
-$notification = new MailNotification();
-
-return $notification->subject('Password reset Token')
-    ->to($user) // or $users
-    ->line('Use following key for reset user password.')
-    ->line($user->token)
-    ->line('Thank you for using our application!')
-    ->send('/send_notification');
+$notification = new RequisitionApprovalNotification($requisition_data);
+$notification->toUser($this->get_users($permission, $requisition_data['requisition']['department_id']));
+return $notification->send('/api/send_notification');
 ```
 
+
+Notification
+------------
+
+```
+<?php
+namespace App\Notifications\Procurement;
+
+use Pathum4u\ApiNotification\ApiNotification;
+use Illuminate\Notifications\Messages\MailMessage;
+
+class RequisitionApprovalNotification extends ApiNotification
+{
+    /**
+     *
+     *
+     */
+    public $data;
+
+    public $user;
+
+
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct($requisition_data)
+    {
+        //
+        $this->data = $requisition_data;
+        $this->user = $requisition_data['users'][0];
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via()
+    {
+        return ['mail', 'database'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail()
+    {
+        return (new MailMessage)
+            ->subject('New Requisition')
+            ->line($this->user->name .' submitted new requisition for approval' )
+            ->action('Show Requisition', url(env('FRONTEND_SERVICE_URI').'/requisition/conversation/'.$this->data['requisition']['slug']))
+            ->line('Thank you for using our application!');
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'subject' => 'New Requisition',
+            'action' => url(env('FRONTEND_SERVICE_URI') . '/requisition/conversation/' . $this->data['requisition']['slug']),
+            'body' => $this->user->name . ' Submitted new requisition for approval',
+        ];
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toSms()
+    {
+        return [
+            //
+        ];
+    }
+}
+
+```
 For multiple service 
 
 use service name from the config on pathumu4/api_request (config/services.php) package or by default it use 'notification'
