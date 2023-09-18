@@ -3,7 +3,7 @@
     "description": "micorservice api notification service",
     "type": "library",
     "require": {
-        "pathum4u/api_request": "^1.0"
+        "pathum4u/api_request": "^2.0"
     },
     "license": "MIT",
     "autoload": {
